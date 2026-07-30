@@ -28,7 +28,6 @@ a,button,.pp-frame,.pp-svc-card,.pp-domain-cell{transition:background-color .28s
 @keyframes ppFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
 @keyframes ppRise{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
 @keyframes ppBlink{0%,100%{opacity:1;}50%{opacity:.2;}}
-@keyframes ppMarq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 @media (prefers-reduced-motion:no-preference){
   main{animation:ppFade .5s cubic-bezier(.16,.84,.44,1) both;}
   @supports (animation-timeline:view()){
@@ -104,9 +103,8 @@ a,button,.pp-frame,.pp-svc-card,.pp-domain-cell{transition:background-color .28s
 .pp-domain-t{font-family:'Archivo',sans-serif;font-weight:700;font-size:1.06rem;letter-spacing:-.01em;text-transform:uppercase;color:var(--text-primary);}
 
 /* Marquee */
-.pp-marquee-wrap{overflow:hidden;}
-.pp-marquee-track{display:flex;width:max-content;animation:ppMarq 32s linear infinite;padding:16px 0 24px;}
-.pp-marquee-item{display:inline-flex;align-items:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.02em;text-transform:uppercase;color:var(--text-faint);padding:0 30px;white-space:nowrap;}
+.pp-marquee-track{display:flex;flex-wrap:wrap;justify-content:center;padding:16px 0 28px;}
+.pp-marquee-item{display:inline-flex;align-items:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:1.05rem;letter-spacing:.02em;text-transform:uppercase;color:var(--text-faint);padding:8px 30px;white-space:nowrap;}
 .pp-marquee-dot{display:inline-block;width:5px;height:5px;background:var(--amber);margin-left:30px;opacity:.6;}
 
 /* Service cards */
