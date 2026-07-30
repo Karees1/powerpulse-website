@@ -1,0 +1,23 @@
+{
+  "name": "PowerPulse — Thermal Engineering",
+  "short_name": "PowerPulse",
+  "description": "Thermal engineering for industry — heat, steam and combustion systems across Kenya & East Africa.",
+  "id": "/",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0C0D0F",
+  "theme_color": "#0C0D0F",
+  "categories": ["business", "utilities"],
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Request a Quote", "url": "/contactus?source=pwa-shortcut", "description": "Open the quote request form" },
+    { "name": "Call us", "url": "tel:+254721170470", "description": "Call PowerPulse" }
+  ]
+}

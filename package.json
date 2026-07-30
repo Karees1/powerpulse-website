@@ -1,0 +1,12 @@
+{
+  "name": "powerpulse-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PowerPulse — thermal engineering marketing site (static frontend + Vercel serverless contact API).",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "resend": "^4.0.1"
+  }
+}
