@@ -14,8 +14,8 @@ html{scroll-behavior:smooth;}
 body{margin:0;background:var(--ink);color:var(--text-primary);font-family:'IBM Plex Sans',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;}
 ::selection{background:rgba(255,163,26,.28);color:#fff;}
 a{color:inherit;text-decoration:none;}
-a:not(.btn-pp):not(.pp-nav-link):not(.pp-footer-link):not(.pp-social-icon){color:var(--amber);}
-a:not(.btn-pp):not(.pp-nav-link):not(.pp-footer-link):not(.pp-social-icon):hover{color:#fff;}
+a:not(.btn-pp):not(.pp-nav-link):not(.pp-footer-link):not(.pp-social-icon):not(.pp-fab){color:var(--amber);}
+a:not(.btn-pp):not(.pp-nav-link):not(.pp-footer-link):not(.pp-social-icon):not(.pp-fab):hover{color:#fff;}
 img{max-width:100%;}
 h1,h2,h3,h4{font-family:'Archivo',sans-serif;font-weight:800;letter-spacing:-.01em;margin:0;}
 main{overflow-x:hidden;}
