@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Website Content Survey | PowerPulse</title>
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="background:#0C0D0F;-webkit-font-smoothing:antialiased;">
+
+<header style="border-bottom:1px solid var(--rule);">
+  <div class="container" style="padding:22px 0;display:flex;align-items:center;gap:12px;">
+    <span style="width:32px;height:32px;background:var(--amber);display:flex;align-items:center;justify-content:center;flex:none;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0C0D0F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2.5-7 4 16 3-11 1.8 5H22"/></svg>
+    </span>
+    <span style="font-family:'Archivo',sans-serif;font-weight:800;font-size:1.05rem;letter-spacing:.01em;color:#fff;">POWERPULSE</span>
+  </div>
+</header>
+
+<main>
+<section style="padding:56px 0 24px;">
+  <div class="container" style="max-width:760px;">
+    <span class="pp-eyebrow">// Website content survey</span>
+    <h1 class="pp-section-title" style="font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:16px;">Tell us about your business.</h1>
+    <p style="font-size:1.05rem;color:var(--text-body);line-height:1.6;max-width:620px;">
+      This is a private form, not a public page on the site. Everything you enter here goes straight to our team by
+      email so we can make sure the website reflects your business accurately — no guesswork, no placeholder text.
+      Take your time; there's no wrong length of answer. If you have a logo or photos to share, email them separately
+      and mention this survey.
+    </p>
+  </div>
+</section>
+
+<section style="padding:16px 0 80px;">
+  <div class="container" style="max-width:760px;">
+    <form id="surveyForm" novalidate>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">About you</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">Filled in by (name &amp; role) <span class="req">*</span></label>
+          <input class="pp-input" name="submitter_name" type="text" required placeholder="e.g. Jane Doe, Owner">
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Business identity</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">Business / brand name <span class="req">*</span></label>
+          <input class="pp-input" name="business_name" type="text" required>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Tagline / one-line positioning</label>
+          <input class="pp-input" name="tagline" type="text" placeholder="e.g. Thermal engineering for industry">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">What the business does, in one line <span class="req">*</span></label>
+          <input class="pp-input" name="industry" type="text" required>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Brand color (hex code or description, if you have one)</label>
+          <input class="pp-input" name="brand_color" type="text" placeholder="e.g. #FFA31A or 'amber / dark navy'">
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Contact &amp; location</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">WhatsApp number, with country code <span class="req">*</span></label>
+          <input class="pp-input" name="whatsapp_number" type="text" required placeholder="e.g. +254 7XX XXX XXX">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Other phone number(s)</label>
+          <textarea class="pp-textarea" name="phone_numbers" rows="2" placeholder="One per line"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Contact email <span class="req">*</span></label>
+          <input class="pp-input" name="contact_email" type="email" required>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Physical address / location</label>
+          <textarea class="pp-textarea" name="address" rows="2"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Business hours</label>
+          <input class="pp-input" name="hours" type="text" placeholder="e.g. Mon–Fri 8am–5pm · Sat 9am–1pm">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Social media links</label>
+          <textarea class="pp-textarea" name="social_links" rows="3" placeholder="One per line, e.g. Instagram — https://instagram.com/yourhandle"></textarea>
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">About the business</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">Founded / years in operation</label>
+          <input class="pp-input" name="founded_year" type="text" placeholder="e.g. 2005, or '20+ years'">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">About the business, in your own words <span class="req">*</span></label>
+          <textarea class="pp-textarea" name="about_text" rows="5" required placeholder="A few sentences: what you do, who you serve, what makes you different."></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Mission / vision / values</label>
+          <textarea class="pp-textarea" name="mission_vision_values" rows="3"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Why should someone choose you?</label>
+          <textarea class="pp-textarea" name="differentiators" rows="4" placeholder="One reason per line"></textarea>
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Services</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">Services / products offered <span class="req">*</span></label>
+          <textarea class="pp-textarea" name="services_offered" rows="6" required placeholder="One per line. A short description on the same line helps, e.g. 'Boiler servicing — routine maintenance and repair'"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Who do you serve? (industries / customer types)</label>
+          <textarea class="pp-textarea" name="target_industries" rows="3"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Key stats, if you have them</label>
+          <textarea class="pp-textarea" name="key_stats" rows="3" placeholder="One per line, e.g. '20+ years', '500+ projects completed'"></textarea>
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Anything else</h2>
+        <div class="pp-field">
+          <label class="pp-form-label">Testimonials, if you have any</label>
+          <textarea class="pp-textarea" name="testimonials" rows="3" placeholder="Quote — name, company"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Preferred call-to-action wording</label>
+          <input class="pp-input" name="cta_wording" type="text" placeholder="e.g. 'Request a Quote', 'Book a Consultation'">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Anything else we should know</label>
+          <textarea class="pp-textarea" name="notes" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="pp-hp-field" aria-hidden="true">
+        <label for="survey_website">Leave this field empty</label>
+        <input type="text" id="survey_website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn-pp btn-pp-amber w-100" style="justify-content:center;padding:16px;">
+        Submit survey
+      </button>
+      <p class="pp-form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const statusEl = form.querySelector('.pp-form-status');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const payload = Object.fromEntries(new FormData(form).entries());
+
+  submitBtn.disabled = true;
+  const originalLabel = submitBtn.innerHTML;
+  submitBtn.innerHTML = 'Sending…';
+  statusEl.textContent = '';
+  statusEl.className = 'pp-form-status';
+
+  try {
+    const res = await fetch('/api/survey', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.ok) {
+      form.reset();
+      form.style.display = 'none';
+      statusEl.textContent = 'Thank you — your answers have been sent. We\'ll be in touch if we need anything else.';
+      statusEl.className = 'pp-form-status pp-form-status-ok';
+      statusEl.style.display = 'block';
+    } else {
+      statusEl.textContent = data.error || 'Something went wrong submitting the survey. Please try again.';
+      statusEl.className = 'pp-form-status pp-form-status-err';
+    }
+  } catch (err) {
+    statusEl.textContent = 'Network error — please try again.';
+    statusEl.className = 'pp-form-status pp-form-status-err';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalLabel;
+  }
+});
+</script>
+</body>
+</html>
