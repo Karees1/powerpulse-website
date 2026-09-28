@@ -11,6 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
+
+  // Deliberately not an <a> tag — looks and behaves like plain footer text
+  // (no underline, no pointer cursor, no visible href) unless you click it.
+  const legalMark = document.getElementById('pp-legal-mark');
+  if (legalMark) {
+    legalMark.addEventListener('click', () => {
+      window.location.href = '/portal';
+    });
+  }
 });
 
 if ('serviceWorker' in navigator) {

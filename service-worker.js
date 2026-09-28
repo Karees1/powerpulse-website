@@ -11,7 +11,7 @@ self.addEventListener('fetch', (event) => {
   const { request } = event;
   if (request.method !== 'GET') return;
   const url = new URL(request.url);
-  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/onboarding-2026')) return;
+  if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/onboarding-2026') || url.pathname.startsWith('/portal') || url.pathname.startsWith('/_next/')) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(
