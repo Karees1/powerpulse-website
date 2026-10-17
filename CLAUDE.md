@@ -90,6 +90,16 @@ Sourced from real historical invoices/quotations at `H:\PowerPulsedocs`
   (if any) between PowerPulse and "Energtronic Products Limited" (a logo
   file found in the same folder, context unknown).
 
+## Director Hub login
+
+The Director account is **iankariuki418@gmail.com** (confirmed via a direct
+`auth.users` query — the same account already used for Ops Hub, predates
+this project). Nobody — not this session, not any Claude session — has or
+can retrieve the password; Supabase only stores it hashed. If it's ever
+needed, use the password-reset flow (see "Password recovery was broken"
+below for the state of that flow) rather than guessing or asking for it to
+be typed into a prompt.
+
 ## This site's own content survey
 
 `onboarding-2026.html` (hidden, unlinked, noindex) is the mechanism for
@@ -148,6 +158,36 @@ Full detail, acceptance criteria, and reasoning for every phase lives in
   already-designed plan (Track A ships immediately, Track B1/B2 gated on
   brand facts that are now mostly confirmed).
 
+## Password recovery was broken — partially fixed, one step remains
+
+Ian tried to reset the Director password and hit two separate real bugs,
+found by actually walking through the flow rather than assuming it worked:
+
+1. **Supabase's Site URL was still `localhost:3000`** (a dev leftover),
+   so every auth email redirected to the owner's own machine instead of
+   the live app. **Not fixed yet — dashboard-only, no API access to this
+   setting from a Claude session.** Fix: Supabase dashboard → Authentication
+   → URL Configuration → change Site URL to
+   `https://director-hub-eight.vercel.app`.
+2. **Even after reaching the right URL, `/reset-password` failed with
+   "Auth session missing!"** — this one WAS fixed in code
+   (`director-hub` PR #9, merged and live): this app uses `@supabase/ssr`'s
+   cookie-based session model, but Supabase's default reset-email link uses
+   the old-style `#access_token=...` hash fragment, which only the plain
+   client-side `supabase-js` SDK auto-detects — `@supabase/ssr` needs a
+   *server* response to set the session cookie, which a hash fragment can't
+   trigger. Added `src/app/auth/confirm/route.ts`, a server Route Handler
+   that does the exchange properly (Supabase's own documented pattern for
+   Next.js App Router + `@supabase/ssr`).
+3. **Still needed, dashboard-only, not done as of this writing:** Supabase
+   dashboard → Authentication → Emails → "Reset Password" template → change
+   the action link to
+   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password`
+   (replacing whatever default hash-based link is there now). Until both
+   #1 and #3 are done, password recovery will still fail end-to-end even
+   though the code fix is live — check whether Ian has done these before
+   assuming the flow works.
+
 ## Hard-won lessons from this session (read before repeating the mistakes)
 
 - **Don't trust `list_tables`' row counts.** They're cached/stale Postgres
@@ -176,18 +216,42 @@ Full detail, acceptance criteria, and reasoning for every phase lives in
   Verification of preview builds has to go through the Vercel API
   (`get_deployment`, build status), not a plain browser fetch.
 - **Always check the *actual deployed* page, not just "the build succeeded."**
-  Twice this session, something that type-checked and built cleanly still
-  had a real bug once checked against the live site (a second WhatsApp link
-  that didn't get the number update; the Zaytuna duplicate-client mess).
-  Reading the live DOM/response after every deploy caught both.
+  Three times this session, something that type-checked and built cleanly
+  still had a real bug once checked against the live site or an actual user
+  flow (a second WhatsApp link that didn't get the number update; the
+  Zaytuna duplicate-client mess; password recovery looking fine in code but
+  failing end-to-end because of a dashboard-only Auth setting). Reading the
+  live DOM/response, and actually walking the flow a real user would,
+  caught all three.
+- **`@supabase/ssr`'s cookie-based session model does not auto-detect the
+  `#access_token=...` hash fragment Supabase's default auth emails use.**
+  That's a vanilla `supabase-js` client-side behavior only. Any email-link
+  flow (password recovery, magic links, signup confirmation) in this app
+  needs a server Route Handler calling `verifyOtp({ token_hash, type })` —
+  see `src/app/auth/confirm/route.ts` in `director-hub` — and the matching
+  Supabase email template needs to be pointed at that route's URL shape
+  (`?token_hash=...&type=...`), not the default hash-based link. This
+  likely affects every auth-email flow in this app, not just password
+  reset — worth checking if magic links or signup confirmation ever get
+  used.
 
 ## Open items
 
+- **Password recovery is still not fully working** — see "Password recovery
+  was broken" above. Two dashboard changes needed from Ian before it's
+  end-to-end functional; check whether he's done them before assuming this
+  is resolved.
+- The authenticated `/portal` UI (documents search/delete, the Phase 3c
+  list pages) still has never been visually verified by anyone — this
+  hasn't changed since Phase 3 shipped. Once password recovery actually
+  works, logging in to check this becomes possible for the first time.
 - 5 Dependabot PRs sitting open on `director-hub` (routine dependency
   bumps) — one (`react-dom` 19.2.8→19.3.0) failed its build. Not
   investigated; not part of this project's phase work unless asked.
 - Phase 2 Stage 2 (branded subdomain) needs the owner to actually buy a
   domain — external dependency, no code action possible yet.
+- Phase 4 (SEO) has not started — still the next planned phase per
+  `PLANNING.md`.
 - Several facts in the content survey are still genuinely open (see "Real
   business facts" above) — don't resolve them by guessing; wait for the
   owner's answers.
