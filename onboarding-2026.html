@@ -27,13 +27,14 @@
 <main>
 <section style="padding:56px 0 24px;">
   <div class="container" style="max-width:760px;">
-    <span class="pp-eyebrow">// Website content survey</span>
-    <h1 class="pp-section-title" style="font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:16px;">Tell us about your business.</h1>
+    <span class="pp-eyebrow">// Website content survey — v2</span>
+    <h1 class="pp-section-title" style="font-size:clamp(1.9rem,3.6vw,2.7rem);margin-bottom:16px;">Tell us about PowerPulse Dynamics Ltd.</h1>
     <p style="font-size:1.05rem;color:var(--text-body);line-height:1.6;max-width:620px;">
       This is a private form, not a public page on the site. Everything you enter here goes straight to our team by
-      email so we can make sure the website reflects your business accurately — no guesswork, no placeholder text.
-      Take your time; there's no wrong length of answer. If you have a logo or photos to share, email them separately
-      and mention this survey.
+      email so we can rebuild the site on PowerPulse's own real facts — not placeholder text borrowed from the
+      setup this site was cloned from. Most fields are optional and can be left blank; the ones marked
+      <span class="req">*</span> are the ones we can't move forward without. If you have a logo or photos to share,
+      email them separately and mention this survey.
     </p>
   </div>
 </section>
@@ -42,36 +43,87 @@
   <div class="container" style="max-width:760px;">
     <form id="surveyForm" novalidate>
 
+      <div class="pp-form-card" style="margin-bottom:24px;border-left:3px solid var(--amber);">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:var(--amber);margin:0 0 10px;">⚠ Urgent — please answer this one first</h2>
+        <p style="font-size:.92rem;color:var(--text-body);line-height:1.55;margin:0 0 16px;">
+          The homepage currently names <strong>eight real companies</strong> as if they're PowerPulse clients, in two
+          places: a "Trusted across Kenya &amp; East Africa" logo strip naming <strong>Serena Hotels, Sarova
+          Whitesands, Equatorial Nut Processors, Kenya Railways, Maasai Mara, Kenchic, Brookside Dairy</strong> and
+          <strong>Riara Group</strong>, and three testimonial quotes attributed to Kenchic, Brookside Dairy, and
+          Riara Group by name. We need to know, company by company, which of these are real, current or past
+          clients who've agreed to be named — anything that isn't needs to come down immediately. Publishing
+          fabricated client claims or quotes attributed to real, identifiable companies is a serious problem on its
+          own, separate from everything else in this survey.
+        </p>
+        <div class="pp-field">
+          <label class="pp-form-label">Which of these eight are real, named clients — and which need to come down? <span class="req">*</span></label>
+          <textarea class="pp-textarea" name="existing_testimonials_check" rows="4" required placeholder="Go through all eight: Serena Hotels, Sarova Whitesands, Equatorial Nut Processors, Kenya Railways, Maasai Mara, Kenchic, Brookside Dairy, Riara Group. e.g. 'Kenchic and Brookside Dairy are real clients, keep both the logo and the testimonial. The other six are not real — remove them from the logo strip. None of the testimonial quotes were actually said by anyone — remove all three testimonials regardless.'"></textarea>
+        </div>
+      </div>
+
       <div class="pp-form-card" style="margin-bottom:24px;">
         <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">About you</h2>
         <div class="pp-field">
           <label class="pp-form-label">Filled in by (name &amp; role) <span class="req">*</span></label>
           <input class="pp-input" name="submitter_name" type="text" required placeholder="e.g. Jane Doe, Owner">
         </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Your role</label>
+          <input class="pp-input" name="submitter_role" type="text" placeholder="e.g. Owner / Director, Office manager, etc.">
+        </div>
       </div>
 
       <div class="pp-form-card" style="margin-bottom:24px;">
-        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Business identity</h2>
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 6px;">Legal &amp; brand identity</h2>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:0 0 18px;">This section exists specifically to fix the brand mix-up with the business this site was cloned from.</p>
         <div class="pp-field">
-          <label class="pp-form-label">Business / brand name <span class="req">*</span></label>
-          <input class="pp-input" name="business_name" type="text" required>
+          <label class="pp-form-label">Registered legal company name <span class="req">*</span></label>
+          <input class="pp-input" name="legal_entity_name" type="text" required placeholder="e.g. PowerPulse Dynamics Ltd — confirm this is exactly right">
+          <p style="font-size:.78rem;color:var(--text-muted);margin:6px 0 0;">We currently have "PowerPulse Dynamics Ltd" from another internal system but it's never been confirmed directly with you — please confirm or correct it.</p>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Trading / brand name (if different from the legal name)</label>
+          <input class="pp-input" name="business_name" type="text" placeholder="e.g. PowerPulse">
         </div>
         <div class="pp-field">
           <label class="pp-form-label">Tagline / one-line positioning</label>
           <input class="pp-input" name="tagline" type="text" placeholder="e.g. Thermal engineering for industry">
         </div>
         <div class="pp-field">
-          <label class="pp-form-label">What the business does, in one line <span class="req">*</span></label>
-          <input class="pp-input" name="industry" type="text" required>
+          <label class="pp-form-label">Service categories — tick all that genuinely apply</label>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Industrial boilers"> Industrial boilers</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Burners & combustion"> Burners &amp; combustion</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Incinerators & waste systems"> Incinerators &amp; waste systems</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Steam systems"> Steam systems</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Spare parts & maintenance"> Spare parts &amp; maintenance</label>
+            <label style="display:flex;align-items:center;gap:8px;font-size:.92rem;color:var(--text-body);"><input type="checkbox" name="service_categories" value="Site assessments & consulting"> Site assessments &amp; consulting</label>
+          </div>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Other service category (if not listed above)</label>
+          <input class="pp-input" name="service_categories_other" type="text">
         </div>
         <div class="pp-field">
           <label class="pp-form-label">Brand color (hex code or description, if you have one)</label>
           <input class="pp-input" name="brand_color" type="text" placeholder="e.g. #FFA31A or 'amber / dark navy'">
         </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Do you have a logo file and/or real project photos you can share?</label>
+          <input class="pp-input" name="brand_assets_available" type="text" placeholder="e.g. 'Yes, logo + a few site photos — will email separately' / 'No, none yet'">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">PowerPulse's own social media handles</label>
+          <textarea class="pp-textarea" name="social_handles" rows="3" placeholder="One per line, e.g. 'Instagram — @powerpulse_ke'. Leave blank if you don't have accounts yet — we'll just remove the social icons until you do."></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">What contact info should the public website actually show? <span class="req">*</span></label>
+          <textarea class="pp-textarea" name="preferred_public_contact" rows="3" required placeholder="e.g. 'Set up a new address like info@powerpulsedynamics.co.ke and show that', 'Just show WhatsApp/phone for now, no public email', or 'Keep routing email internally but don't display any address on the Contact page'"></textarea>
+        </div>
       </div>
 
       <div class="pp-form-card" style="margin-bottom:24px;">
-        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Contact &amp; location</h2>
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Contact &amp; service area</h2>
         <div class="pp-field">
           <label class="pp-form-label">WhatsApp number, with country code <span class="req">*</span></label>
           <input class="pp-input" name="whatsapp_number" type="text" required placeholder="e.g. +254 7XX XXX XXX">
@@ -81,8 +133,9 @@
           <textarea class="pp-textarea" name="phone_numbers" rows="2" placeholder="One per line"></textarea>
         </div>
         <div class="pp-field">
-          <label class="pp-form-label">Contact email <span class="req">*</span></label>
+          <label class="pp-form-label">Your email, for our own records and replies <span class="req">*</span></label>
           <input class="pp-input" name="contact_email" type="email" required>
+          <p style="font-size:.78rem;color:var(--text-muted);margin:6px 0 0;">This is just so we can reach you about this survey — not necessarily what's shown publicly (see "contact info" above).</p>
         </div>
         <div class="pp-field">
           <label class="pp-form-label">Physical address / location</label>
@@ -93,16 +146,72 @@
           <input class="pp-input" name="hours" type="text" placeholder="e.g. Mon–Fri 8am–5pm · Sat 9am–1pm">
         </div>
         <div class="pp-field">
-          <label class="pp-form-label">Social media links</label>
-          <textarea class="pp-textarea" name="social_links" rows="3" placeholder="One per line, e.g. Instagram — https://instagram.com/yourhandle"></textarea>
+          <label class="pp-form-label">Where do you actually take on jobs? <span class="req">*</span></label>
+          <input class="pp-input" name="service_area_radius" type="text" required placeholder="e.g. 'Nairobi only', 'Nairobi + ~150km', 'Kenya-wide' — only say East Africa if you genuinely serve clients outside Kenya">
+          <p style="font-size:.78rem;color:var(--text-muted);margin:6px 0 0;">The site currently claims "Kenya & East Africa" — we need to confirm or correct that.</p>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Any real response-time commitment you can stand behind?</label>
+          <input class="pp-input" name="response_time_commitment" type="text" placeholder="e.g. 'Same-day WhatsApp reply', '24/7 emergency call-out within 2 hours'. Leave blank if unsure.">
+        </div>
+      </div>
+
+      <div class="pp-form-card" style="margin-bottom:24px;">
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 6px;">Proof &amp; credibility</h2>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:0 0 18px;">This is the content the old survey never asked for — it's what makes the site read as genuinely PowerPulse's own, not generic boilerplate. All optional, but valuable.</p>
+        <div class="pp-field">
+          <label class="pp-form-label">Certifications, licenses or compliance (DOSH, ISO, manufacturer-authorized status, etc.)</label>
+          <textarea class="pp-textarea" name="certifications_and_compliance" rows="3" placeholder="One per line. Only list ones you actually hold — if you're an authorized dealer for any specific brand, say so here and name the brand."></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Equipment brands you actually install or service</label>
+          <textarea class="pp-textarea" name="equipment_brands_serviced" rows="3" placeholder="e.g. 'Riello and Ecoflam burners' — only brands you genuinely work with, not ones you'd like to."></textarea>
+        </div>
+
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);">
+          <p style="font-size:.85rem;color:var(--text-muted);margin:0 0 12px;">Up to 3 real past projects — can describe the client generically (e.g. "a Nairobi dairy processor") if you'd rather not name them.</p>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 1 — what we did</label>
+            <textarea class="pp-textarea" name="case_study_1_summary" rows="2"></textarea>
+          </div>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 1 — result</label>
+            <input class="pp-input" name="case_study_1_result" type="text" placeholder="e.g. 'Cut fuel use 18%, zero unplanned downtime since'">
+          </div>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 2 — what we did</label>
+            <textarea class="pp-textarea" name="case_study_2_summary" rows="2"></textarea>
+          </div>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 2 — result</label>
+            <input class="pp-input" name="case_study_2_result" type="text">
+          </div>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 3 — what we did</label>
+            <textarea class="pp-textarea" name="case_study_3_summary" rows="2"></textarea>
+          </div>
+          <div class="pp-field">
+            <label class="pp-form-label">Case study 3 — result</label>
+            <input class="pp-input" name="case_study_3_result" type="text">
+          </div>
+        </div>
+
+        <div class="pp-field" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);">
+          <label class="pp-form-label">Why should someone choose you? (one per line, with the evidence behind it)</label>
+          <textarea class="pp-textarea" name="differentiators" rows="4" placeholder="Not just a reason — the proof. e.g. 'Fastest call-out in Nairobi — we average under 2 hours' rather than just 'We're fast'"></textarea>
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label">Key stats (only ones you could back up if asked)</label>
+          <textarea class="pp-textarea" name="key_stats" rows="3" placeholder="One per line, e.g. '120+ boilers serviced', '18 years in operation'"></textarea>
         </div>
       </div>
 
       <div class="pp-form-card" style="margin-bottom:24px;">
         <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">About the business</h2>
         <div class="pp-field">
-          <label class="pp-form-label">Founded / years in operation</label>
-          <input class="pp-input" name="founded_year" type="text" placeholder="e.g. 2005, or '20+ years'">
+          <label class="pp-form-label">Founded / actual years in operation <span class="req">*</span></label>
+          <input class="pp-input" name="founded_year" type="text" required placeholder="e.g. 2015, or '9 years'">
+          <p style="font-size:.78rem;color:var(--text-muted);margin:6px 0 0;">The site currently says "20+ years" / "two decades" — this was inherited copy we've already pulled down until we have your real number.</p>
         </div>
         <div class="pp-field">
           <label class="pp-form-label">About the business, in your own words <span class="req">*</span></label>
@@ -113,32 +222,71 @@
           <textarea class="pp-textarea" name="mission_vision_values" rows="3"></textarea>
         </div>
         <div class="pp-field">
-          <label class="pp-form-label">Why should someone choose you?</label>
-          <textarea class="pp-textarea" name="differentiators" rows="4" placeholder="One reason per line"></textarea>
+          <label class="pp-form-label">Company history / milestones worth mentioning</label>
+          <textarea class="pp-textarea" name="company_history_milestones" rows="3" placeholder="e.g. 'Started as a two-person team in 2015', 'Opened a second workshop in 2022'"></textarea>
         </div>
       </div>
 
       <div class="pp-form-card" style="margin-bottom:24px;">
-        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Services</h2>
+        <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 6px;">Services</h2>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:0 0 18px;">Up to 5 — fill in as many as apply. Only Service 1 is required.</p>
+
         <div class="pp-field">
-          <label class="pp-form-label">Services / products offered <span class="req">*</span></label>
-          <textarea class="pp-textarea" name="services_offered" rows="6" required placeholder="One per line. A short description on the same line helps, e.g. 'Boiler servicing — routine maintenance and repair'"></textarea>
+          <label class="pp-form-label">Service 1 — name <span class="req">*</span></label>
+          <input class="pp-input" name="service_1_name" type="text" required placeholder="e.g. Industrial boiler installation">
         </div>
         <div class="pp-field">
+          <label class="pp-form-label">Service 1 — description <span class="req">*</span></label>
+          <textarea class="pp-textarea" name="service_1_description" rows="2" required placeholder="What it covers, who it's for, any brands/equipment involved"></textarea>
+        </div>
+
+        <div class="pp-field" style="margin-top:14px;">
+          <label class="pp-form-label" style="opacity:.8;">Service 2 — name</label>
+          <input class="pp-input" name="service_2_name" type="text">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label" style="opacity:.8;">Service 2 — description</label>
+          <textarea class="pp-textarea" name="service_2_description" rows="2"></textarea>
+        </div>
+
+        <div class="pp-field" style="margin-top:14px;">
+          <label class="pp-form-label" style="opacity:.8;">Service 3 — name</label>
+          <input class="pp-input" name="service_3_name" type="text">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label" style="opacity:.8;">Service 3 — description</label>
+          <textarea class="pp-textarea" name="service_3_description" rows="2"></textarea>
+        </div>
+
+        <div class="pp-field" style="margin-top:14px;">
+          <label class="pp-form-label" style="opacity:.8;">Service 4 — name</label>
+          <input class="pp-input" name="service_4_name" type="text">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label" style="opacity:.8;">Service 4 — description</label>
+          <textarea class="pp-textarea" name="service_4_description" rows="2"></textarea>
+        </div>
+
+        <div class="pp-field" style="margin-top:14px;">
+          <label class="pp-form-label" style="opacity:.8;">Service 5 — name</label>
+          <input class="pp-input" name="service_5_name" type="text">
+        </div>
+        <div class="pp-field">
+          <label class="pp-form-label" style="opacity:.8;">Service 5 — description</label>
+          <textarea class="pp-textarea" name="service_5_description" rows="2"></textarea>
+        </div>
+
+        <div class="pp-field" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--rule);">
           <label class="pp-form-label">Who do you serve? (industries / customer types)</label>
           <textarea class="pp-textarea" name="target_industries" rows="3"></textarea>
-        </div>
-        <div class="pp-field">
-          <label class="pp-form-label">Key stats, if you have them</label>
-          <textarea class="pp-textarea" name="key_stats" rows="3" placeholder="One per line, e.g. '20+ years', '500+ projects completed'"></textarea>
         </div>
       </div>
 
       <div class="pp-form-card" style="margin-bottom:24px;">
         <h2 style="font-size:1.1rem;text-transform:uppercase;color:#fff;margin:0 0 18px;">Anything else</h2>
         <div class="pp-field">
-          <label class="pp-form-label">Testimonials, if you have any</label>
-          <textarea class="pp-textarea" name="testimonials" rows="3" placeholder="Quote — name, company"></textarea>
+          <label class="pp-form-label">Real testimonials, if you have any you're allowed to publish</label>
+          <textarea class="pp-textarea" name="testimonials" rows="4" placeholder="Only include something a real client actually said and agreed to have published. Include their name/company only with permission — otherwise describe them generically, e.g. 'a Nairobi dairy processor.' If in doubt, leave it out."></textarea>
         </div>
         <div class="pp-field">
           <label class="pp-form-label">Preferred call-to-action wording</label>
@@ -171,7 +319,23 @@ document.getElementById('surveyForm').addEventListener('submit', async (e) => {
   const form = e.target;
   const statusEl = form.querySelector('.pp-form-status');
   const submitBtn = form.querySelector('button[type="submit"]');
-  const payload = Object.fromEntries(new FormData(form).entries());
+
+  // Build the payload by hand (not Object.fromEntries) so repeated keys —
+  // the service_categories checkbox group — collapse into one comma-joined
+  // string instead of silently keeping only the last checked value.
+  const formData = new FormData(form);
+  const collected = {};
+  for (const [key, value] of formData.entries()) {
+    if (key in collected) {
+      collected[key] = Array.isArray(collected[key]) ? [...collected[key], value] : [collected[key], value];
+    } else {
+      collected[key] = value;
+    }
+  }
+  const payload = {};
+  for (const key in collected) {
+    payload[key] = Array.isArray(collected[key]) ? collected[key].join(', ') : collected[key];
+  }
 
   submitBtn.disabled = true;
   const originalLabel = submitBtn.innerHTML;
