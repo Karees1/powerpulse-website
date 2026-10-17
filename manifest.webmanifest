@@ -18,6 +18,6 @@
   ],
   "shortcuts": [
     { "name": "Request a Quote", "url": "/contactus?source=pwa-shortcut", "description": "Open the quote request form" },
-    { "name": "Call us", "url": "tel:+254721170470", "description": "Call PowerPulse" }
+    { "name": "Call us", "url": "tel:+254710187781", "description": "Call PowerPulse" }
   ]
 }
