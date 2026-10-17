@@ -57,10 +57,10 @@ module.exports = async function handler(req, res) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const recipient = process.env.CONTACT_RECIPIENT || 'boilertechniques@gmail.com';
+  const recipient = process.env.CONTACT_RECIPIENT;
   const fromAddress = process.env.CONTACT_FROM || 'PowerPulse Website <onboarding@resend.dev>';
 
-  if (!apiKey) {
+  if (!apiKey || !recipient) {
     res.status(503).json({ ok: false, error: 'Email is not configured yet. Please WhatsApp or call us instead.' });
     return;
   }
