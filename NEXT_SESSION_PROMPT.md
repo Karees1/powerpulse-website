@@ -28,13 +28,19 @@ sites. Phase 4 (SEO) has not started; it's fully designed already in
 `PLANNING.md`'s Phase 4 section.
 
 **Three open items worth checking before starting anything new:**
-- **Password recovery is still not fully working.** The code bug is fixed
-  (`director-hub` PR #9, a server-side auth-confirm route) and live, but
-  two Supabase dashboard settings still need Ian to change them: the Site
-  URL (still `localhost:3000`) and the Reset Password email template
-  (still the default hash-based link, needs to point at the new
-  `/auth/confirm` route instead). Check CLAUDE.md's "Password recovery was
-  broken" section for the exact values before assuming this is resolved.
+- **Password recovery: believed fully fixed (`director-hub` PR #10),
+  merged and live — but not yet confirmed end-to-end by Ian with a real
+  reset email.** Full saga: Ian fixed the Supabase Site URL himself; a
+  server-side `/auth/confirm` route (PR #9) was built as the "textbook"
+  fix but turned out unusable because this Supabase project's tier locks
+  email-template editing behind custom SMTP (not configured); the actual
+  working fix is `RecoveryRedirect.tsx`, a client component mounted in
+  `layout.tsx` that catches Supabase's *default*, unmodified recovery
+  email link client-side and calls `setSession()` — **no Supabase
+  dashboard changes needed at all.** Verified locally with a synthetic
+  token. Ask Ian whether he's tried a real "forgot password" email since
+  this shipped; if not, that's the first thing to confirm before touching
+  auth again. Full history in CLAUDE.md's "Password recovery" section.
 - The authenticated `/portal` dashboard (documents search/delete, the
   updated Phase 3c list pages) has never been visually verified by anyone —
   it was blocked on the password-recovery bug above as much as on missing
@@ -52,11 +58,16 @@ the real `/portal` dashboard — don't mistake one for the other being
 broken; after any deploy, check the actual live site/response and, where
 possible, walk the real user flow, not just that the build succeeded; each
 public page has two separate WhatsApp links if phone/contact info ever
-needs touching again; `@supabase/ssr` doesn't auto-detect the `#access_token=`
-hash fragment Supabase's default auth emails use — any email-link flow
-needs a server route doing `verifyOtp()`, not client-side hash parsing.
+needs touching again; `@supabase/ssr`'s cookie-based client doesn't
+passively auto-detect the `#access_token=...` hash fragment Supabase's
+default auth emails use, but an explicit client-side `setSession()` call
+DOES persist correctly via its cookies — that's the actual fix pattern,
+not a server-side route (which needs email-template editing, which needs
+custom SMTP, which isn't configured here); check whether a Supabase
+feature needs a paid/SMTP tier before designing a fix around it.
 
-**Default next task, unless told otherwise:** check in on the password-
-recovery dashboard changes and whether the `/portal` UI has been verified
-yet; otherwise start Phase 4 (SEO) per the plan already written in
+**Default next task, unless told otherwise:** ask Ian whether he's
+confirmed password recovery end-to-end with a real reset email since PR
+#10 shipped, and whether he's logged into `/portal` and seen the Phase 3c
+UI yet; otherwise start Phase 4 (SEO) per the plan already written in
 `PLANNING.md`.
