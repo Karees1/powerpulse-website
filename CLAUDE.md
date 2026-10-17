@@ -158,35 +158,42 @@ Full detail, acceptance criteria, and reasoning for every phase lives in
   already-designed plan (Track A ships immediately, Track B1/B2 gated on
   brand facts that are now mostly confirmed).
 
-## Password recovery was broken — partially fixed, one step remains
+## Password recovery — was broken, now fixed, no dashboard changes needed
 
-Ian tried to reset the Director password and hit two separate real bugs,
-found by actually walking through the flow rather than assuming it worked:
+Ian tried to reset the Director password and hit this in stages, found by
+actually walking through the flow rather than assuming it worked:
 
-1. **Supabase's Site URL was still `localhost:3000`** (a dev leftover),
-   so every auth email redirected to the owner's own machine instead of
-   the live app. **Not fixed yet — dashboard-only, no API access to this
-   setting from a Claude session.** Fix: Supabase dashboard → Authentication
-   → URL Configuration → change Site URL to
-   `https://director-hub-eight.vercel.app`.
-2. **Even after reaching the right URL, `/reset-password` failed with
-   "Auth session missing!"** — this one WAS fixed in code
-   (`director-hub` PR #9, merged and live): this app uses `@supabase/ssr`'s
-   cookie-based session model, but Supabase's default reset-email link uses
-   the old-style `#access_token=...` hash fragment, which only the plain
-   client-side `supabase-js` SDK auto-detects — `@supabase/ssr` needs a
-   *server* response to set the session cookie, which a hash fragment can't
-   trigger. Added `src/app/auth/confirm/route.ts`, a server Route Handler
-   that does the exchange properly (Supabase's own documented pattern for
-   Next.js App Router + `@supabase/ssr`).
-3. **Still needed, dashboard-only, not done as of this writing:** Supabase
-   dashboard → Authentication → Emails → "Reset Password" template → change
-   the action link to
-   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password`
-   (replacing whatever default hash-based link is there now). Until both
-   #1 and #3 are done, password recovery will still fail end-to-end even
-   though the code fix is live — check whether Ian has done these before
-   assuming the flow works.
+1. **Supabase's Site URL was `localhost:3000`** (a dev leftover) — Ian
+   fixed this himself in the dashboard (Authentication → URL Configuration)
+   to point at `https://director-hub-eight.vercel.app`. Confirmed fixed:
+   the reset email started landing on the real production domain.
+2. **Reaching the real domain still didn't work** — the email's link landed
+   on the plain homepage, not a password-change form. Reason: Supabase's
+   Reset Password email template still used the default link, and
+   **template editing is locked behind custom SMTP on this project's
+   tier** ("Set up custom SMTP to edit templates") — not configured, and a
+   separate, bigger task. So pointing the template at a custom route
+   (`/auth/confirm`, added in `director-hub` PR #9) was never actually
+   usable.
+3. **Final fix (`director-hub` PR #10, merged and live) works with
+   Supabase's unmodified default link** instead of requiring template
+   access: `src/components/RecoveryRedirect.tsx`, mounted in the root
+   layout, detects the default link's `#access_token=...&type=recovery`
+   hash fragment on any page load, calls `supabase.auth.setSession()`
+   explicitly (an actual API call, which `@supabase/ssr` DOES persist via
+   cookies — passive hash auto-detection is what doesn't work with this
+   client), then sends the visitor on to `/reset-password` with a real
+   session already established. **No dashboard or email-template change
+   needed at all** — this works with things exactly as Ian left them.
+   Verified locally (normal page load unaffected; a synthetic recovery hash
+   correctly triggers the redirect) but not yet confirmed end-to-end with a
+   real reset email — check with Ian whether he's tried it since this
+   shipped.
+4. The earlier `/auth/confirm` route (PR #9) is still in the codebase and
+   harmless to leave — it's just unreachable without custom SMTP + a
+   template change neither of which are planned. Don't remove it without
+   asking; it'd be the right piece to wire up if custom SMTP ever does get
+   configured for some other reason.
 
 ## Hard-won lessons from this session (read before repeating the mistakes)
 
@@ -223,24 +230,34 @@ found by actually walking through the flow rather than assuming it worked:
   failing end-to-end because of a dashboard-only Auth setting). Reading the
   live DOM/response, and actually walking the flow a real user would,
   caught all three.
-- **`@supabase/ssr`'s cookie-based session model does not auto-detect the
-  `#access_token=...` hash fragment Supabase's default auth emails use.**
-  That's a vanilla `supabase-js` client-side behavior only. Any email-link
-  flow (password recovery, magic links, signup confirmation) in this app
-  needs a server Route Handler calling `verifyOtp({ token_hash, type })` —
-  see `src/app/auth/confirm/route.ts` in `director-hub` — and the matching
-  Supabase email template needs to be pointed at that route's URL shape
-  (`?token_hash=...&type=...`), not the default hash-based link. This
-  likely affects every auth-email flow in this app, not just password
-  reset — worth checking if magic links or signup confirmation ever get
-  used.
+- **`@supabase/ssr`'s cookie-based session model does not *passively
+  auto-detect* the `#access_token=...` hash fragment Supabase's default
+  auth emails use** the way the vanilla `supabase-js` client does — but an
+  *explicit* `supabase.auth.setSession({access_token, refresh_token})` call
+  still works fine and does persist via cookies. The "right" documented
+  fix (a server Route Handler calling `verifyOtp({token_hash, type})`, see
+  `src/app/auth/confirm/route.ts`) needs Supabase's email template pointed
+  at a custom URL shape — which needs custom SMTP configured first (see
+  next lesson). The pragmatic fix that needed neither: detect the hash
+  client-side and call `setSession()` explicitly (`RecoveryRedirect.tsx`,
+  mounted in the root layout). Don't assume the "documented best practice"
+  fix is actually usable before checking what the project's actual tier
+  allows.
+- **Supabase locks email template editing behind custom SMTP.** On this
+  project's tier, Authentication → Emails only shows a read-only preview of
+  the default template ("Set up custom SMTP to edit templates") — there's
+  no way to change the action link's URL shape without first configuring a
+  real SMTP provider in Auth settings, a separate, bigger task nobody has
+  done. Any fix that assumes "just change the email template" needs this
+  checked first, not assumed.
 
 ## Open items
 
-- **Password recovery is still not fully working** — see "Password recovery
-  was broken" above. Two dashboard changes needed from Ian before it's
-  end-to-end functional; check whether he's done them before assuming this
-  is resolved.
+- **Password recovery: code fix for the no-SMTP path is live
+  (`director-hub` PR #10)**, verified locally but not yet confirmed
+  end-to-end with a real reset email — check with Ian whether he's actually
+  completed a reset since this shipped before assuming it's fully resolved.
+  See "Password recovery" above for the full history.
 - The authenticated `/portal` UI (documents search/delete, the Phase 3c
   list pages) still has never been visually verified by anyone — this
   hasn't changed since Phase 3 shipped. Once password recovery actually
