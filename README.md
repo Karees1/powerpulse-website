@@ -1,6 +1,6 @@
 # PowerPulse — Thermal Engineering Website
 
-Dark industrial-tech marketing site for PowerPulse (Boiler Techniques Engineering), Nairobi. Static HTML/CSS/JS frontend + a single Vercel serverless function for the contact form. No database, no server process to manage.
+Dark industrial-tech marketing site for PowerPulse, Nairobi. Static HTML/CSS/JS frontend + a single Vercel serverless function for the contact form. No database, no server process to manage.
 
 ## Stack
 
@@ -26,7 +26,7 @@ Copy `.env.example` to `.env` and fill in:
 | Variable | Purpose |
 |---|---|
 | `RESEND_API_KEY` | API key from [resend.com](https://resend.com) — required for the contact form to send email. |
-| `CONTACT_RECIPIENT` | Mailbox that receives enquiries. Defaults to `boilertechniques@gmail.com`. |
+| `CONTACT_RECIPIENT` | Mailbox that receives enquiries. Required — the contact/survey functions return a clear error if this is unset rather than falling back to any hardcoded address. |
 | `CONTACT_FROM` | Verified sender address. Until a domain is verified in Resend, use the Resend sandbox sender (`onboarding@resend.dev`) — see below. |
 | `SITE_URL` | Your production URL. Used server-side to reject contact-form POSTs that don't originate from your own site. |
 | `SURVEY_RECIPIENT` | Optional. Where content-survey submissions go. Falls back to `CONTACT_RECIPIENT` if unset — useful once `CONTACT_RECIPIENT` switches to the client's own inbox, since survey answers should keep going to whoever is building the site. |
@@ -35,13 +35,13 @@ Copy `.env.example` to `.env` and fill in:
 1. Sign up at resend.com (free tier: 3,000 emails/month, 100/day).
 2. Create an API key → set it as `RESEND_API_KEY` in Vercel project settings (Production + Preview).
 3. Sandbox mode (no domain verified) can only deliver to the email address on your Resend account — fine for testing, not for the live site.
-4. For production, verify your own sending domain in Resend (Domains → Add Domain, add the DNS records they give you), then set `CONTACT_FROM` to an address on that domain, e.g. `PowerPulse <noreply@boilertechniques.co.ke>`.
+4. For production, verify your own sending domain in Resend (Domains → Add Domain, add the DNS records they give you), then set `CONTACT_FROM` to an address on that domain, e.g. `PowerPulse <noreply@yourdomain.co.ke>`.
 
 ## Contact form behavior
 
 - The visible form (`contactus.html`) and the footer "Quick Inquiry" form (every page) both POST as JSON to `/api/contact` via `js/contact.js`, with an inline success/error message — no page reload.
 - If JS fails to load, the forms still `action="/api/contact" method="post"` as a fallback (the function accepts both).
-- **Fastest path for a visitor who wants a reply now:** the WhatsApp floating button (bottom-right, every page) opens a chat at `wa.me/254721170470` — always works, no backend involved.
+- **Fastest path for a visitor who wants a reply now:** the WhatsApp floating button (bottom-right, every page) opens a chat at `wa.me/254710187781` — always works, no backend involved.
 
 ## Content survey
 
