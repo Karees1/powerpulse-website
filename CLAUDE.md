@@ -158,7 +158,7 @@ Full detail, acceptance criteria, and reasoning for every phase lives in
   already-designed plan (Track A ships immediately, Track B1/B2 gated on
   brand facts that are now mostly confirmed).
 
-## Password recovery — was broken, now fixed, no dashboard changes needed
+## Password recovery — was broken, now fixed and confirmed end-to-end (2026-10-18)
 
 Ian tried to reset the Director password and hit this in stages, found by
 actually walking through the flow rather than assuming it worked:
@@ -175,25 +175,38 @@ actually walking through the flow rather than assuming it worked:
    separate, bigger task. So pointing the template at a custom route
    (`/auth/confirm`, added in `director-hub` PR #9) was never actually
    usable.
-3. **Final fix (`director-hub` PR #10, merged and live) works with
-   Supabase's unmodified default link** instead of requiring template
-   access: `src/components/RecoveryRedirect.tsx`, mounted in the root
-   layout, detects the default link's `#access_token=...&type=recovery`
-   hash fragment on any page load, calls `supabase.auth.setSession()`
-   explicitly (an actual API call, which `@supabase/ssr` DOES persist via
-   cookies — passive hash auto-detection is what doesn't work with this
-   client), then sends the visitor on to `/reset-password` with a real
-   session already established. **No dashboard or email-template change
-   needed at all** — this works with things exactly as Ian left them.
-   Verified locally (normal page load unaffected; a synthetic recovery hash
-   correctly triggers the redirect) but not yet confirmed end-to-end with a
-   real reset email — check with Ian whether he's tried it since this
-   shipped.
-4. The earlier `/auth/confirm` route (PR #9) is still in the codebase and
+3. **Fix (`director-hub` PR #10, merged and live) works with Supabase's
+   unmodified default link** instead of requiring template access:
+   `src/components/RecoveryRedirect.tsx`, mounted in the root layout,
+   detects the default link's `#access_token=...&type=recovery` hash
+   fragment on any page load, calls `supabase.auth.setSession()` explicitly
+   (an actual API call, which `@supabase/ssr` DOES persist via cookies —
+   passive hash auto-detection is what doesn't work with this client), then
+   sends the visitor on to `/reset-password` with a real session already
+   established. **No dashboard or email-template change needed at all.**
+4. **Follow-up fix (`director-hub` PR #11, merged):** PR #10's `setSession()`
+   call never checked whether it actually succeeded — a stale link (already
+   clicked once, or past Supabase's recovery-token lifetime) still
+   redirected to `/reset-password` with no real session, reproducing the
+   exact "Auth session missing!" symptom even though the underlying fix
+   was live. Now a failed `setSession()` bounces to
+   `/portal/login?error=expired-reset-link` with a clear message instead of
+   failing silently; the login page was also wired up to actually render
+   that param (it had no code reading it at all before this).
+5. **Confirmed end-to-end on 2026-10-18: Ian logged in successfully using a
+   fresh password-reset email.** This saga is closed — no outstanding
+   dashboard or code work on this flow.
+6. The earlier `/auth/confirm` route (PR #9) is still in the codebase and
    harmless to leave — it's just unreachable without custom SMTP + a
    template change neither of which are planned. Don't remove it without
    asking; it'd be the right piece to wire up if custom SMTP ever does get
    configured for some other reason.
+7. **There is no self-service "forgot password" link anywhere in
+   director-hub's own UI** — found 2026-10-18 while investigating a
+   separate PDF issue. Every reset email tested so far (including the one
+   that finally worked) was triggered manually from the Supabase dashboard.
+   Worth asking Ian whether that's intentional (single-Director app, fine
+   as-is) or a real gap before building anything further on top of it.
 
 ## Hard-won lessons from this session (read before repeating the mistakes)
 
@@ -253,15 +266,26 @@ actually walking through the flow rather than assuming it worked:
 
 ## Open items
 
-- **Password recovery: code fix for the no-SMTP path is live
-  (`director-hub` PR #10)**, verified locally but not yet confirmed
-  end-to-end with a real reset email — check with Ian whether he's actually
-  completed a reset since this shipped before assuming it's fully resolved.
-  See "Password recovery" above for the full history.
+- **Password recovery is fully resolved** (PRs #10 and #11, confirmed live
+  2026-10-18 with a real reset email) — no longer an open item, see
+  "Password recovery" above.
+- **PDF generator logo was rendering at 40×40pt** (a postage stamp) on
+  every invoice/quotation/LPO — fixed in `director-hub` PR #12 (bumped to
+  100×100pt in `sharedDocumentStyles.ts`). Found 2026-10-18 by comparing a
+  generated invoice against a real historical quotation Ian had on hand.
+- **"Prepared by" renders as "—" on generated PDFs** — not a code bug, the
+  template already pulls `director.full_name` correctly. The Director's
+  `profiles` row (owned by the sibling Ops Hub app, not this repo) has
+  `full_name: null`. Needs Ian to confirm what name to set before writing
+  to that shared table — asked, not yet answered as of 2026-10-18.
+- **No self-service "forgot password" link exists anywhere in
+  director-hub's UI** — every tested reset email so far was sent manually
+  from the Supabase dashboard. Found 2026-10-18; worth confirming with Ian
+  whether that's acceptable for a single-Director app or worth building.
 - The authenticated `/portal` UI (documents search/delete, the Phase 3c
-  list pages) still has never been visually verified by anyone — this
-  hasn't changed since Phase 3 shipped. Once password recovery actually
-  works, logging in to check this becomes possible for the first time.
+  list pages) is now confirmed reachable (Ian logged in and used
+  `/portal/invoices/new` successfully on 2026-10-18) but hasn't had a
+  full walkthrough of every list page yet.
 - 5 Dependabot PRs sitting open on `director-hub` (routine dependency
   bumps) — one (`react-dom` 19.2.8→19.3.0) failed its build. Not
   investigated; not part of this project's phase work unless asked.
